@@ -34,3 +34,7 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+# aerofinance
+AeroFinance is a high-fidelity personal finance orchestrator featuring a weightless "Antigravity" UI. Built with React and glassmorphism, it replaces clunky spreadsheets with a fluid, semi-transparent dashboard for tracking income, spending, and social debt (Lended/Borrowed) in real-time.
+
