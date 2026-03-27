@@ -5,15 +5,35 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/dashboard'
+  
+  console.log('--- AUTH CALLBACK ROUTE HIT ---')
+  console.log('Code present?:', !!code)
+  console.log('Origin:', origin)
 
   if (code) {
     const supabase = await createClient()
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
+    const { error, data } = await supabase.auth.exchangeCodeForSession(code)
+    
+    if (error) {
+      console.error('Exchange error:', error.message)
+      return NextResponse.redirect(`${origin}/login?error=auth_failed`)
+    }
+    
+    console.log('Session exchanged successfully!', data?.user?.id)
+    
+    const forwardedHost = request.headers.get('x-forwarded-host') 
+    const isLocalEnv = process.env.NODE_ENV === 'development'
+    
+    if (isLocalEnv) {
+      return NextResponse.redirect(`${origin}${next}`)
+    } else if (forwardedHost) {
+      return NextResponse.redirect(`https://${forwardedHost}${next}`)
+    } else {
       return NextResponse.redirect(`${origin}${next}`)
     }
   }
 
-  // Auth error — redirect to login with error
+  console.log('No code found in URL searchParams.')
+  // return the user to an error page with some instructions
   return NextResponse.redirect(`${origin}/login?error=auth_failed`)
 }
