@@ -10,6 +10,7 @@ import {
 import { useFinanceStore } from '@/store/useFinanceStore'
 import { useUser } from '@/hooks/useUser'
 import { useState } from 'react'
+import ConnectWallet from '@/components/ConnectWallet'
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -82,6 +83,9 @@ export default function Sidebar() {
           )
         })}
       </nav>
+
+      {/* Connect Wallet */}
+      <ConnectWallet />
 
       {/* Privacy Mode */}
       <motion.button
