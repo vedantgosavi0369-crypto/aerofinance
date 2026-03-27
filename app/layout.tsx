@@ -1,19 +1,24 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Sidebar from '@/components/layout/Sidebar'
 import { Toaster } from 'react-hot-toast'
-import DataLoader from '@/components/DataLoader'
+import AppShell from '@/components/layout/AppShell'
 
 export const metadata: Metadata = {
   title: 'AeroFinance – Weightless Money Management',
   description: 'Premium personal finance app with glassmorphism design',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <meta name="theme-color" content="#060613" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      </head>
       <body>
-        {/* Ambient orbs */}
         <div className="orb" style={{ width: 600, height: 600, background: '#7c6aff', top: -200, left: -100 }} />
         <div className="orb" style={{ width: 500, height: 500, background: '#06d6a0', bottom: -150, right: -100 }} />
         <div className="orb" style={{ width: 350, height: 350, background: '#ff6b97', top: '50%', left: '40%' }} />
@@ -30,14 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             },
           }}
         />
-        <DataLoader />
-
-        <div style={{ display: 'flex', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
-          <Sidebar />
-          <main style={{ marginLeft: '220px', flex: 1, padding: '2rem', minHeight: '100vh' }}>
-            {children}
-          </main>
-        </div>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   )
