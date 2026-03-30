@@ -15,41 +15,37 @@ import {
 import RainyDayPredictor from '@/components/insights/RainyDayPredictor'
 
 const card = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 15 },
   show: { opacity: 1, y: 0 },
 }
 
 const container = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.09 } },
+  show: { transition: { staggerChildren: 0.05 } },
 }
 
 function StatCard({
   label,
   value,
   icon: Icon,
-  color,
   sub,
-  glow,
 }: {
   label: string
   value: string
   icon: React.ElementType
-  color: string
   sub?: string
-  glow?: string
 }) {
   const { privacyMode } = useFinanceStore()
   return (
-    <motion.div variants={card} className={`glass-card ${glow ?? ''}`} style={{ padding: '1.5rem', borderColor: color, boxShadow: `4px 4px 0px ${color}` }}>
+    <motion.div variants={card} className="glass-card" style={{ padding: '1.25rem' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <p style={{ fontSize: '0.8rem', color: '#FFF', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem', fontWeight: 800 }}>{label}</p>
-          <p className={privacyMode ? 'privacy-blur' : ''} style={{ fontSize: '1.8rem', fontWeight: 900, color, lineHeight: 1.1 }}>{value}</p>
-          {sub && <p style={{ fontSize: '0.8rem', color: '#FFF', marginTop: '0.5rem', fontWeight: 600, borderLeft: `2px solid ${color}`, paddingLeft: '0.4rem' }}>{sub}</p>}
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 500, marginBottom: '0.4rem' }}>{label}</p>
+          <p className={privacyMode ? 'privacy-blur' : ''} style={{ fontSize: '1.6rem', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.1 }}>{value}</p>
+          {sub && <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>{sub}</p>}
         </div>
-        <div style={{ background: '#000', border: `3px solid ${color}`, padding: '0.6rem', boxShadow: `2px 2px 0px ${color}` }}>
-          <Icon size={22} color={color} strokeWidth={3} />
+        <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '6px', padding: '0.5rem' }}>
+          <Icon size={18} color="var(--text-secondary)" />
         </div>
       </div>
     </motion.div>
@@ -81,8 +77,8 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', flexDirection: 'column', gap: '1rem' }}>
-        <Loader2 size={40} color="#B28DFF" strokeWidth={3} style={{ animation: 'spin 1s linear infinite' }} />
-        <p style={{ color: '#FFF', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Loading Finances...</p>
+        <Loader2 size={32} color="var(--text-secondary)" style={{ animation: 'spin 1s linear infinite' }} />
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500 }}>Loading finances…</p>
         <style>{`@keyframes spin { to { transform: rotate(360deg); }}`}</style>
       </div>
     )
@@ -94,31 +90,33 @@ export default function DashboardPage() {
 
       {/* Hero Balance Card */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.97 }}
+        initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
-        className="glass-card glow-purple"
+        className="glass-card"
         style={{
           padding: '2rem',
           marginBottom: '1.5rem',
-          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start'
         }}
       >
-        <p style={{ fontSize: '0.9rem', color: '#FFF', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem', fontWeight: 900 }}>Total Liquidity</p>
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 500, marginBottom: '0.25rem' }}>Total Liquidity</p>
         <p
-          className={privacyMode ? 'privacy-blur' : 'gradient-text'}
-          style={{ fontSize: '3.5rem', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1 }}
+          className={privacyMode ? 'privacy-blur' : ''}
+          style={{ fontSize: '3rem', fontWeight: 600, letterSpacing: '-0.02em', lineHeight: 1.1, color: 'var(--text-primary)' }}
         >
           {balance >= 0 ? '+' : ''}{fmt(balance)}
         </p>
-        <div style={{ marginTop: '1.2rem', display: 'flex', gap: '1.5rem', flexWrap: 'wrap', borderTop: '3px dashed #B28DFF', paddingTop: '1.2rem' }}>
-          <FormulaChip label="Income" value={fmt(income)} color="#00E676" icon={<ArrowUpRight size={15} strokeWidth={3} />} privacy={privacyMode} />
-          <span style={{ color: '#FFF', fontWeight: 900, fontSize: '1.5rem', alignSelf: 'center' }}>+</span>
-          <FormulaChip label="Borrowed" value={fmt(borrowed)} color="#B28DFF" icon={<ArrowUpRight size={15} strokeWidth={3} />} privacy={privacyMode} />
-          <span style={{ color: '#FFF', fontWeight: 900, fontSize: '1.5rem', alignSelf: 'center' }}>−</span>
-          <FormulaChip label="Expenses" value={fmt(expenses)} color="#FF4081" icon={<ArrowDownRight size={15} strokeWidth={3} />} privacy={privacyMode} />
-          <span style={{ color: '#FFF', fontWeight: 900, fontSize: '1.5rem', alignSelf: 'center' }}>−</span>
-          <FormulaChip label="Lended" value={fmt(lended)} color="#FFEB3B" icon={<ArrowDownRight size={15} strokeWidth={3} />} privacy={privacyMode} />
+        <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1.25rem', flexWrap: 'wrap', width: '100%' }}>
+          <FormulaChip label="Income" value={fmt(income)} icon={<ArrowUpRight size={14} />} privacy={privacyMode} />
+          <span style={{ color: 'var(--border-color)', fontWeight: 300, fontSize: '1.2rem', alignSelf: 'center' }}>+</span>
+          <FormulaChip label="Borrowed" value={fmt(borrowed)} icon={<ArrowUpRight size={14} />} privacy={privacyMode} />
+          <span style={{ color: 'var(--border-color)', fontWeight: 300, fontSize: '1.2rem', alignSelf: 'center' }}>−</span>
+          <FormulaChip label="Expenses" value={fmt(expenses)} icon={<ArrowDownRight size={14} />} privacy={privacyMode} />
+          <span style={{ color: 'var(--border-color)', fontWeight: 300, fontSize: '1.2rem', alignSelf: 'center' }}>−</span>
+          <FormulaChip label="Lended" value={fmt(lended)} icon={<ArrowDownRight size={14} />} privacy={privacyMode} />
         </div>
       </motion.div>
 
@@ -127,14 +125,14 @@ export default function DashboardPage() {
         variants={container}
         initial="hidden"
         animate="show"
-        style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}
+        style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}
       >
-        <StatCard label="Total Income" value={fmt(income)} icon={TrendingUp} color="#00E676" glow="glow-green" />
-        <StatCard label="Total Expenses" value={fmt(expenses)} icon={TrendingDown} color="#FF4081" glow="glow-red" />
-        <StatCard label="Lended Out" value={fmt(lended)} icon={ArrowUpRight} color="#FFEB3B" sub="Pending recovery" />
-        <StatCard label="Borrowed" value={fmt(borrowed)} icon={ArrowDownRight} color="#B28DFF" sub="Pending repay" />
-        <StatCard label="Net Debt Position" value={fmt(borrowed - lended)} icon={Users} color={borrowed - lended >= 0 ? '#B28DFF' : '#FFEB3B'} sub={borrowed - lended >= 0 ? 'You owe more' : 'Others owe you'} />
-        <StatCard label="Savings Vault" value={fmt(savings)} icon={Wallet} color="#00E5FF" sub="From round‑ups" glow="glow-cyan" />
+        <StatCard label="Total Income" value={fmt(income)} icon={TrendingUp} />
+        <StatCard label="Total Expenses" value={fmt(expenses)} icon={TrendingDown} />
+        <StatCard label="Lended Out" value={fmt(lended)} icon={ArrowUpRight} sub="Pending recovery" />
+        <StatCard label="Borrowed" value={fmt(borrowed)} icon={ArrowDownRight} sub="Pending repay" />
+        <StatCard label="Net Debt Position" value={fmt(borrowed - lended)} icon={Users} sub={borrowed - lended >= 0 ? 'You owe more' : 'Others owe you'} />
+        <StatCard label="Savings Vault" value={fmt(savings)} icon={Wallet} sub="From round-ups" />
       </motion.div>
 
       {/* Rainy Day Predictor */}
@@ -143,12 +141,12 @@ export default function DashboardPage() {
   )
 }
 
-function FormulaChip({ label, value, color, icon, privacy }: { label: string; value: string; color: string; icon: React.ReactNode; privacy: boolean }) {
+function FormulaChip({ label, value, icon, privacy }: { label: string; value: string; icon: React.ReactNode; privacy: boolean }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', padding: '0.5rem', border: `2px solid ${color}`, background: '#000', boxShadow: `2px 2px 0px ${color}` }}>
-      <span style={{ fontSize: '0.75rem', color: '#FFF', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 800 }}>{label}</span>
-      <span style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color, fontWeight: 900, fontSize: '1rem' }} className={privacy ? 'privacy-blur' : ''}>
-        {icon}{value}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+      <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 500 }}>{label}</span>
+      <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.95rem' }} className={privacy ? 'privacy-blur' : ''}>
+        <span style={{ color: 'var(--text-secondary)' }}>{icon}</span> {value}
       </span>
     </div>
   )

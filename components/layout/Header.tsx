@@ -2,7 +2,6 @@
 
 import { format } from 'date-fns'
 import { useFinanceStore } from '@/store/useFinanceStore'
-import { DollarSign } from 'lucide-react'
 
 export default function Header({ title }: { title: string }) {
   const { getTotalBalance, privacyMode } = useFinanceStore()
@@ -15,26 +14,27 @@ export default function Header({ title }: { title: string }) {
       alignItems: 'center',
       justifyContent: 'space-between',
       marginBottom: '2rem',
+      paddingBottom: '1.25rem',
+      borderBottom: '1px solid var(--border-color)',
       flexWrap: 'wrap',
       gap: '1rem',
     }}>
       <div>
-        <h1 style={{ fontSize: '1.6rem', fontWeight: 700, color: '#e8e8f0', lineHeight: 1.2 }}>{title}</h1>
-        <p style={{ fontSize: '0.85rem', color: 'rgba(232,232,240,0.4)', marginTop: '0.2rem' }}>{today}</p>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.2 }}>{title}</h1>
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>{today}</p>
       </div>
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: '0.6rem',
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        borderRadius: '0.85rem',
+        background: 'var(--bg-secondary)',
+        border: '1px solid var(--border-color)',
+        borderRadius: '6px',
         padding: '0.5rem 1rem',
       }}>
-        <DollarSign size={15} color="rgba(124,106,255,0.8)" />
-        <span style={{ fontSize: '0.8rem', color: 'rgba(232,232,240,0.5)', marginRight: '0.4rem' }}>Balance</span>
+        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Balance</span>
         <span
-          style={{ fontWeight: 700, fontSize: '1rem', color: balance >= 0 ? '#06d6a0' : '#ff6b97' }}
+          style={{ fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-primary)' }}
           className={privacyMode ? 'privacy-blur' : ''}
         >
           {balance >= 0 ? '+' : ''}₹{balance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}

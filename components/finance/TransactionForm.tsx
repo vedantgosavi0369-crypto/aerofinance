@@ -32,7 +32,7 @@ export default function TransactionForm() {
       date,
       tax_deductible: taxDeductible,
     })
-    toast.success(`${type === 'income' ? '💰 Income' : '💸 Expense'} recorded!`)
+    toast.success(`${type === 'income' ? 'Income' : 'Expense'} recorded!`)
     setAmount(''); setCategory(''); setNote(''); setTaxDeductible(false)
     setLoading(false)
     setOpen(false)
@@ -41,14 +41,14 @@ export default function TransactionForm() {
   return (
     <>
       <motion.button
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         className="btn-primary"
         onClick={() => setOpen(true)}
-        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#00E5FF' }}
+        style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
       >
-        <PlusCircle size={20} strokeWidth={3} color="#000" />
-        <span style={{ color: '#000', fontWeight: 900 }}>ADD TRANSACTION</span>
+        <PlusCircle size={18} />
+        <span>Add Transaction</span>
       </motion.button>
 
       <AnimatePresence>
@@ -58,41 +58,42 @@ export default function TransactionForm() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             style={{
-              position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)',
+              position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(4px)',
               zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem',
             }}
             onClick={() => setOpen(false)}
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              initial={{ scale: 0.95, opacity: 0, y: 15 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              className="glass-dark"
-              style={{ width: '100%', maxWidth: 460, padding: '2rem', background: '#000', border: '4px solid #FFF', boxShadow: '8px 8px 0px #B28DFF' }}
+              exit={{ scale: 0.95, opacity: 0, y: 15 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              className="glass-card"
+              style={{ width: '100%', maxWidth: 460, padding: '2rem', background: 'var(--bg-primary)', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}
               onClick={(e) => e.stopPropagation()}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', alignItems: 'center' }}>
-                <h2 style={{ fontWeight: 900, fontSize: '1.4rem', textTransform: 'uppercase', color: '#FFF' }}>Add Transaction</h2>
-                <button onClick={() => setOpen(false)} style={{ background: '#FF4081', border: '2px solid #FFF', boxShadow: '2px 2px 0px #FFF', color: '#000', cursor: 'pointer', padding: '0.3rem' }}>
-                  <X size={20} strokeWidth={3} />
+                <h2 style={{ fontSize: '1.25rem', color: 'var(--text-primary)' }}>New Transaction</h2>
+                <button onClick={() => setOpen(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '0.2rem', display: 'flex' }}>
+                  <X size={20} />
                 </button>
               </div>
 
               {/* Type Toggle */}
-              <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.25rem', background: '#000', padding: '0.4rem', border: '3px solid #FFF', borderRadius: '0' }}>
+              <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', background: 'var(--bg-secondary)', padding: '0.25rem', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
                 {(['expense', 'income'] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => { setType(t); setCategory('') }}
                     style={{
-                      flex: 1, padding: '0.5rem', borderRadius: '0', 
-                      border: type === t ? '3px solid #000' : '2px dashed #FFF', 
-                      cursor: 'pointer', fontWeight: 900, fontSize: '0.9rem', 
-                      fontFamily: 'Outfit, sans-serif', textTransform: 'uppercase',
-                      background: type === t ? (t === 'income' ? '#00E676' : '#FF4081') : '#000',
-                      color: type === t ? '#000' : '#FFF',
-                      transition: 'all 0.1s',
+                      flex: 1, padding: '0.5rem', borderRadius: '4px', 
+                      border: 'none', 
+                      cursor: 'pointer', fontWeight: 500, fontSize: '0.9rem', 
+                      fontFamily: 'Inter, sans-serif', textTransform: 'capitalize',
+                      background: type === t ? 'var(--bg-primary)' : 'transparent',
+                      color: type === t ? 'var(--text-primary)' : 'var(--text-secondary)',
+                      boxShadow: type === t ? '0 1px 3px rgba(0,0,0,0.05)' : 'none',
+                      transition: 'all 0.15s ease',
                     }}
                   >
                     {t}
@@ -118,16 +119,16 @@ export default function TransactionForm() {
                 </div>
                 <div>
                   <label>Note (optional)</label>
-                  <input className="input-glass" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Add a note…" />
+                  <input className="input-glass" value={note} onChange={(e) => setNote(e.target.value)} placeholder="Add a brief note…" />
                 </div>
                 {type === 'expense' && (
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#FFF', cursor: 'pointer', marginBottom: 0, fontWeight: 800 }}>
-                    <input type="checkbox" checked={taxDeductible} onChange={(e) => setTaxDeductible(e.target.checked)} style={{ accentColor: '#B28DFF', width: 18, height: 18, border: '2px solid #FFF' }} />
-                    TAX DEDUCTIBLE
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-primary)', cursor: 'pointer', marginBottom: 0, fontWeight: 500 }}>
+                    <input type="checkbox" checked={taxDeductible} onChange={(e) => setTaxDeductible(e.target.checked)} style={{ accentColor: 'var(--text-primary)', width: 16, height: 16 }} />
+                    Tax Deductible
                   </label>
                 )}
-                <button className="btn-primary" type="submit" disabled={loading} style={{ marginTop: '0.5rem', background: '#FFEB3B', color: '#000', fontSize: '1rem', letterSpacing: '0.05em' }}>
-                  {loading ? 'SAVING…' : 'SAVE TRANSACTION'}
+                <button className="btn-primary" type="submit" disabled={loading} style={{ marginTop: '0.5rem' }}>
+                  {loading ? 'Saving…' : 'Save Transaction'}
                 </button>
               </form>
             </motion.div>

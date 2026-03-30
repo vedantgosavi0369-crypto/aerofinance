@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { useFinanceStore } from '@/store/useFinanceStore'
 import { isSameMonth, subMonths, parseISO } from 'date-fns'
-import { TrendingUp, TrendingDown, AlertCircle } from 'lucide-react'
+import { TrendingUp, TrendingDown, Minus, AlertCircle } from 'lucide-react'
 
 export default function MonthlySpendingPattern() {
   const { transactions, privacyMode } = useFinanceStore()
@@ -50,118 +50,103 @@ export default function MonthlySpendingPattern() {
     }
   })
 
-  // Dark Neo-Brutalism Colors
-  const accentColor = isMoreSpending ? '#FF4081' : (isLessSpending ? '#00E676' : '#FFEB3B')
-
   return (
     <motion.div
-      initial={{ opacity: 0, rotate: -2, y: 20 }}
-      animate={{ opacity: 1, rotate: 0, y: 0 }}
-      transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 }}
+      className="glass-card"
       style={{
-        background: '#000000',
-        border: `4px solid ${accentColor}`,
-        borderRadius: '0',
-        boxShadow: `6px 6px 0px ${accentColor}`,
         padding: '1.5rem',
         marginTop: '1.5rem',
-        color: '#FFFFFF',
-        position: 'relative',
-        overflow: 'hidden',
       }}
     >
-      <div style={{ position: 'absolute', top: -20, right: -20, width: 80, height: 80, border: `4px solid ${accentColor}`, borderRadius: '0', opacity: 0.1, pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', bottom: -10, left: -10, width: 60, height: 60, border: `4px solid ${accentColor}`, opacity: 0.2, pointerEvents: 'none', transform: 'rotate(15deg)' }} />
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: `3px solid ${accentColor}`, paddingBottom: '1rem', marginBottom: '1rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem', marginBottom: '1.25rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.02em', margin: 0, color: accentColor }}>
+          <h2 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
             Monthly Report
           </h2>
-          <p style={{ fontSize: '0.85rem', fontWeight: 800, opacity: 0.8, marginTop: '0.2rem' }}>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>
             Vs Last Month
           </p>
         </div>
         <div style={{ 
-          background: accentColor, 
-          border: '3px solid #FFF', 
-          boxShadow: '3px 3px 0px #FFF',
+          background: 'var(--bg-secondary)', 
+          border: '1px solid var(--border-color)', 
           padding: '0.5rem', 
-          borderRadius: '0',
+          borderRadius: '6px',
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'center' 
         }}>
           {isMoreSpending ? (
-            <TrendingUp size={28} color="#000" strokeWidth={3} />
+            <TrendingUp size={20} color="var(--text-primary)" strokeWidth={2} />
           ) : isLessSpending ? (
-            <TrendingDown size={28} color="#000" strokeWidth={3} />
+            <TrendingDown size={20} color="var(--text-primary)" strokeWidth={2} />
           ) : (
-            <AlertCircle size={28} color="#000" strokeWidth={3} />
+            <Minus size={20} color="var(--text-secondary)" strokeWidth={2} />
           )}
         </div>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-        <p style={{ fontSize: '1.1rem', fontWeight: 800 }}>
-          {isMoreSpending ? 'Ouch! You spent' : isLessSpending ? 'Nice! You saved' : 'You spent exactly the same:'}
+        <p style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>
+          {isMoreSpending ? 'You spent' : isLessSpending ? 'You saved' : 'You spent exactly the same:'}
         </p>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-          <span className={privacyMode ? 'privacy-blur' : ''} style={{ fontSize: '2.5rem', fontWeight: 900, lineHeight: 1, letterSpacing: '-0.03em', color: accentColor }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem' }}>
+          <span className={privacyMode ? 'privacy-blur' : ''} style={{ fontSize: '2.5rem', fontWeight: 600, lineHeight: 1, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>
             {fmt(Math.abs(diff))}
           </span>
           {Math.abs(percentChange) > 0 && (
             <span style={{ 
-              fontSize: '1rem', 
-              fontWeight: 900, 
-              background: accentColor, 
-              color: '#000', 
-              padding: '0.2rem 0.6rem', 
-              borderRadius: '0',
-              border: '2px solid #FFF'
+              fontSize: '0.85rem', 
+              fontWeight: 500, 
+              background: 'var(--bg-secondary)', 
+              color: 'var(--text-primary)', 
+              padding: '0.25rem 0.6rem', 
+              borderRadius: '4px',
+              border: '1px solid var(--border-color)'
             }}>
               {isMoreSpending ? '+' : isLessSpending ? '-' : ''}{percentChange.toFixed(1)}%
             </span>
           )}
         </div>
-        <p style={{ fontSize: '1.1rem', fontWeight: 800 }}>
-          {isMoreSpending ? 'more than last month.' : isLessSpending ? 'compared to last month!' : ''}
+        <p style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>
+          {isMoreSpending ? 'more than last month.' : isLessSpending ? 'compared to last month.' : ''}
         </p>
       </div>
 
       <div style={{ 
         marginTop: '1.5rem', 
-        background: '#000', 
-        border: `3px dashed ${accentColor}`, 
+        background: 'var(--bg-secondary)', 
+        border: '1px solid var(--border-color)', 
         padding: '1rem', 
-        borderRadius: '0' 
+        borderRadius: '6px' 
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontWeight: 800, fontSize: '0.9rem', textTransform: 'uppercase' }}>This Month</span>
-          <span className={privacyMode ? 'privacy-blur' : ''} style={{ fontWeight: 900, fontSize: '1.2rem', color: '#FFF' }}>{fmt(thisMonthSum)}</span>
+          <span style={{ fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-secondary)' }}>This Month</span>
+          <span className={privacyMode ? 'privacy-blur' : ''} style={{ fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)' }}>{fmt(thisMonthSum)}</span>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: `2px solid ${accentColor}40` }}>
-          <span style={{ fontWeight: 800, fontSize: '0.9rem', textTransform: 'uppercase' }}>Last Month</span>
-          <span className={privacyMode ? 'privacy-blur' : ''} style={{ fontWeight: 900, fontSize: '1.2rem', color: '#FFF' }}>{fmt(lastMonthSum)}</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem', paddingTop: '0.5rem', borderTop: '1px solid var(--border-color)' }}>
+          <span style={{ fontWeight: 500, fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Last Month</span>
+          <span className={privacyMode ? 'privacy-blur' : ''} style={{ fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)' }}>{fmt(lastMonthSum)}</span>
         </div>
       </div>
 
       {maxIncreaseCategory && maxIncreaseAmount > 0 && (
         <div style={{ 
           marginTop: '1.5rem', 
-          background: accentColor, 
-          color: '#000', 
-          border: '3px solid #FFF',
-          padding: '0.75rem 1rem', 
-          borderRadius: '0',
+          background: 'var(--bg-primary)', 
+          border: '1px solid var(--border-color)',
+          padding: '0.85rem 1rem', 
+          borderRadius: '6px',
           display: 'flex',
           alignItems: 'center',
-          gap: '0.5rem',
-          boxShadow: '3px 3px 0px #FFF'
+          gap: '0.6rem',
         }}>
-          <AlertCircle size={18} strokeWidth={3} />
-          <span style={{ fontSize: '0.85rem', fontWeight: 800 }}>
-            <strong style={{ fontWeight: 900, textTransform: 'uppercase' }}>{maxIncreaseCategory}</strong> caused the biggest jump (+<span className={privacyMode ? 'privacy-blur' : ''}>{fmt(maxIncreaseAmount)}</span>).
+          <AlertCircle size={16} color="var(--text-secondary)" />
+          <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+            <strong style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{maxIncreaseCategory}</strong> caused the biggest jump (+<span className={privacyMode ? 'privacy-blur' : ''} style={{ color: 'var(--text-primary)' }}>{fmt(maxIncreaseAmount)}</span>).
           </span>
         </div>
       )}

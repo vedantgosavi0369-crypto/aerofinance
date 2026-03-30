@@ -31,13 +31,13 @@ export default function Sidebar() {
 
   return (
     <aside style={{
-      width: '220px',
+      width: '240px',
       minHeight: '100vh',
-      background: '#000000',
-      borderRight: '4px solid #FFFFFF',
+      background: 'var(--bg-primary)',
+      borderRight: '1px solid var(--border-color)',
       display: 'flex',
       flexDirection: 'column',
-      padding: '1.5rem 1rem',
+      padding: '1.5rem 1.25rem',
       position: 'fixed',
       top: 0,
       left: 0,
@@ -45,38 +45,35 @@ export default function Sidebar() {
     }}>
       {/* Logo */}
       <Link href="/dashboard" style={{ textDecoration: 'none' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '2rem', padding: '0 0.5rem' }}>
-          <div style={{ width: 36, height: 36, border: '3px solid #FFF', background: '#FFEB3B', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '2px 2px 0px #FFF' }}>
-            <Zap size={20} color="#000" fill="#000" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '2.5rem', padding: '0 0.5rem' }}>
+          <div style={{ width: 32, height: 32, background: 'var(--accent)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Zap size={18} color="#FFF" fill="#FFF" />
           </div>
-          <span style={{ fontSize: '1.2rem', fontWeight: 900, color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>AeroFinance</span>
+          <span style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>AeroFinance</span>
         </div>
       </Link>
 
       {/* Nav */}
-      <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
         {navItems.map(({ href, label, icon: Icon }) => {
           const isActive = pathname === href || pathname.startsWith(href + '/')
           return (
             <Link key={href} href={href} style={{ textDecoration: 'none' }}>
               <motion.div
-                whileHover={{ x: 3 }}
-                whileTap={{ scale: 0.97 }}
+                whileTap={{ scale: 0.98 }}
                 style={{
                   display: 'flex', alignItems: 'center', gap: '0.75rem',
                   padding: '0.65rem 0.85rem',
-                  background: isActive ? '#00E676' : 'transparent',
-                  border: isActive ? '3px solid #FFFFFF' : '3px solid transparent',
-                  boxShadow: isActive ? '3px 3px 0px #FFFFFF' : 'none',
-                  color: isActive ? '#000000' : '#FFFFFF',
-                  fontWeight: isActive ? 800 : 600,
+                  background: isActive ? 'var(--bg-secondary)' : 'transparent',
+                  borderRadius: '6px',
+                  color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+                  fontWeight: isActive ? 600 : 500,
                   fontSize: '0.9rem',
-                  textTransform: 'uppercase',
                   cursor: 'pointer',
-                  transition: 'all 0.1s',
+                  transition: 'all 0.15s ease',
                 }}
               >
-                <Icon size={18} strokeWidth={isActive ? 3 : 2} />
+                <Icon size={18} strokeWidth={isActive ? 2.5 : 2} color={isActive ? 'var(--text-primary)' : 'var(--text-secondary)'} />
                 {label}
               </motion.div>
             </Link>
@@ -85,29 +82,27 @@ export default function Sidebar() {
       </nav>
 
       {/* Connect Wallet */}
-      <div style={{ marginBottom: '0.75rem' }}>
+      <div style={{ marginBottom: '1rem' }}>
         <ConnectWallet />
       </div>
 
       {/* Privacy Mode */}
       <motion.button
-        whileHover={{ x: 2, y: 2, boxShadow: '1px 1px 0px #FFF' }}
-        whileTap={{ scale: 0.95 }}
+        whileTap={{ scale: 0.98 }}
         onClick={togglePrivacyMode}
         style={{
           display: 'flex', alignItems: 'center', gap: '0.6rem',
-          padding: '0.6rem 0.85rem', marginBottom: '0.75rem',
-          background: privacyMode ? '#FF4081' : '#000',
-          border: '3px solid #FFF',
-          boxShadow: '3px 3px 0px #FFF',
-          color: privacyMode ? '#000' : '#FFF',
-          cursor: 'pointer', fontSize: '0.85rem', fontWeight: 800, width: '100%',
-          textTransform: 'uppercase',
-          transition: 'all 0.1s'
+          padding: '0.65rem 0.85rem', marginBottom: '1rem',
+          background: privacyMode ? 'var(--bg-secondary)' : 'transparent',
+          color: privacyMode ? 'var(--text-primary)' : 'var(--text-secondary)',
+          border: '1px solid ' + (privacyMode ? 'var(--border-color)' : 'transparent'),
+          borderRadius: '6px',
+          cursor: 'pointer', fontSize: '0.85rem', fontWeight: 500, width: '100%',
+          transition: 'all 0.15s ease'
         }}
       >
-        {privacyMode ? <EyeOff size={16} strokeWidth={3} /> : <Eye size={16} strokeWidth={2} />}
-        {privacyMode ? 'Privacy On' : 'Privacy Mode'}
+        {privacyMode ? <EyeOff size={16} /> : <Eye size={16} />}
+        {privacyMode ? 'Privacy: On' : 'Privacy Mode'}
       </motion.button>
 
       {/* User Card */}
@@ -118,25 +113,25 @@ export default function Sidebar() {
             style={{
               width: '100%', display: 'flex', alignItems: 'center', gap: '0.65rem',
               padding: '0.65rem 0.85rem',
-              background: showUser ? '#FFF' : '#000', 
-              border: '3px solid #FFF',
-              boxShadow: '3px 3px 0px #FFF',
-              color: showUser ? '#000' : '#FFF',
+              background: showUser ? 'var(--bg-secondary)' : 'transparent', 
+              border: 'none',
+              borderRadius: '6px',
+              color: 'var(--text-primary)',
               cursor: 'pointer',
-              transition: 'all 0.1s'
+              transition: 'all 0.15s ease'
             }}
           >
             {avatarUrl ? (
-              <img src={avatarUrl} alt={displayName} style={{ width: 28, height: 28, border: '2px solid' + (showUser ? '#000' : '#FFF'), borderRadius: 0, flexShrink: 0 }} />
+              <img src={avatarUrl} alt={displayName} style={{ width: 28, height: 28, borderRadius: '50%', flexShrink: 0 }} />
             ) : (
-              <div style={{ width: 28, height: 28, border: '2px solid ' + (showUser ? '#000' : '#FFF'), background: '#B28DFF', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 800, color: '#000' }}>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--border-color)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)' }}>
                 {displayName[0].toUpperCase()}
               </div>
             )}
-            <span style={{ flex: 1, textAlign: 'left', fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <span style={{ flex: 1, textAlign: 'left', fontSize: '0.85rem', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {displayName}
             </span>
-            <ChevronDown size={16} strokeWidth={3} style={{ transform: showUser ? 'rotate(180deg)' : 'rotate(0)', transition: '0.2s' }} />
+            <ChevronDown size={14} style={{ transform: showUser ? 'rotate(180deg)' : 'rotate(0)', transition: '0.2s', color: 'var(--text-secondary)' }} />
           </button>
 
           {showUser && (
@@ -145,27 +140,31 @@ export default function Sidebar() {
               animate={{ opacity: 1, y: 0 }}
               style={{
                 position: 'absolute', bottom: '110%', left: 0, right: 0,
-                background: '#000', border: '4px solid #FFF',
-                boxShadow: '4px 4px 0px #FFF',
-                padding: '0.75rem', zIndex: 200,
-                marginBottom: '1rem'
+                background: 'var(--bg-primary)', border: '1px solid var(--border-color)',
+                borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+                padding: '0.5rem', zIndex: 200,
+                marginBottom: '0.5rem'
               }}
             >
-              <div style={{ padding: '0.25rem 0', marginBottom: '0.5rem', borderBottom: '2px dashed #FFF', paddingBottom: '0.5rem' }}>
-                <p style={{ fontSize: '0.75rem', fontWeight: 800, color: '#FFF' }}>{user.email}</p>
+              <div style={{ padding: '0.5rem', marginBottom: '0.25rem', borderBottom: '1px solid var(--border-color)' }}>
+                <p style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.email}</p>
               </div>
               <button
                 onClick={signOut}
                 style={{
-                  width: '100%', display: 'flex', alignItems: 'center', gap: '0.6rem',
-                  padding: '0.5rem 0.75rem', 
-                  background: '#FF4081', border: '3px solid #000',
-                  boxShadow: '2px 2px 0px #000',
-                  color: '#000', cursor: 'pointer', fontSize: '0.82rem', fontWeight: 800,
-                  textTransform: 'uppercase'
+                  width: '100%', display: 'flex', alignItems: 'center', gap: '0.5rem',
+                  padding: '0.5rem', 
+                  background: 'transparent',
+                  border: 'none',
+                  borderRadius: '4px',
+                  color: '#EF4444', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 500,
+                  transition: 'background 0.15s ease'
                 }}
+                onMouseOver={(e) => e.currentTarget.style.background = '#FEF2F2'}
+                onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
               >
-                <LogOut size={16} strokeWidth={3} /> Sign Out
+                <LogOut size={15} /> Sign Out
               </button>
             </motion.div>
           )}

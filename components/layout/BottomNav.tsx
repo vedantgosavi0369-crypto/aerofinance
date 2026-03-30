@@ -23,12 +23,12 @@ export default function BottomNav() {
       left: 0,
       right: 0,
       zIndex: 100,
-      background: '#000000',
-      borderTop: '4px solid #FFFFFF',
+      background: 'var(--bg-primary)',
+      borderTop: '1px solid var(--border-color)',
       display: 'flex',
       justifyContent: 'space-around',
       alignItems: 'center',
-      padding: '0.75rem 0 calc(0.75rem + env(safe-area-inset-bottom))',
+      padding: '0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom))',
       gap: '0.25rem',
     }}>
       {navItems.map(({ href, label, icon: Icon }) => {
@@ -36,37 +36,21 @@ export default function BottomNav() {
         return (
           <Link key={href} href={href} style={{ textDecoration: 'none', flex: 1 }}>
             <motion.div
-              whileTap={{ scale: 0.88 }}
+              whileTap={{ scale: 0.95 }}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '0.25rem',
                 padding: '0.4rem 0',
-                borderRadius: '0',
                 position: 'relative',
               }}
             >
-              {isActive && (
-                <motion.div
-                  layoutId="bottom-nav-indicator"
-                  style={{
-                    position: 'absolute',
-                    top: -12, /* aligns with the very top of the bar */
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '100%',
-                    height: 4,
-                    background: '#00E676',
-                  }}
-                />
-              )}
-              <Icon size={22} color={isActive ? '#00E676' : '#FFFFFF'} strokeWidth={isActive ? 3 : 2} />
+              <Icon size={20} color={isActive ? 'var(--text-primary)' : 'var(--text-secondary)'} strokeWidth={isActive ? 2.5 : 2} />
               <span style={{
                 fontSize: '0.65rem',
-                fontWeight: isActive ? 800 : 600,
-                color: isActive ? '#00E676' : '#FFFFFF',
-                textTransform: 'uppercase',
+                fontWeight: isActive ? 600 : 500,
+                color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
               }}>
                 {label}
               </span>

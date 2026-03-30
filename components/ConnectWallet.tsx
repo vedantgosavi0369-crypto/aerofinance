@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Wallet, CheckCircle2, AlertCircle, Loader2, Copy, ExternalLink } from 'lucide-react'
+import { Wallet, CheckCircle2, Loader2, Copy, ExternalLink } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 declare global {
@@ -26,7 +26,6 @@ export default function ConnectWallet() {
   const [open, setOpen] = useState(false)
   const [chainId, setChainId] = useState<string | null>(null)
 
-  // Auto-reconnect if previously connected
   useEffect(() => {
     if (typeof window === 'undefined' || !window.ethereum) return
     window.ethereum.request({ method: 'eth_accounts' }).then((accounts) => {
@@ -65,7 +64,7 @@ export default function ConnectWallet() {
         setAddress(accounts[0])
         const id = await window.ethereum.request({ method: 'eth_chainId' }) as string
         setChainId(id)
-        toast.success('🦊 Wallet connected!')
+        toast.success('Wallet connected!')
       }
     } catch {
       toast.error('Wallet connection cancelled')
@@ -102,93 +101,96 @@ export default function ConnectWallet() {
   const networkName = getNetworkName(chainId)
 
   return (
-    <div style={{ position: 'relative', marginBottom: '0.5rem' }}>
+    <div style={{ position: 'relative', marginBottom: '0.25rem' }}>
       {address ? (
-        /* Connected state */
         <button
           onClick={() => setOpen((v) => !v)}
           style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: '0.6rem',
-            padding: '0.6rem 0.85rem', borderRadius: '0.75rem',
-            background: 'rgba(6,214,160,0.08)', border: '1px solid rgba(6,214,160,0.2)',
-            cursor: 'pointer',
+            padding: '0.65rem 0.85rem', borderRadius: '6px',
+            background: 'var(--bg-secondary)', border: '1px solid var(--border-color)',
+            cursor: 'pointer', transition: 'border-color 0.2s'
           }}
+          onMouseOver={(e) => e.currentTarget.style.borderColor = '#D4D4D8'}
+          onMouseOut={(e) => e.currentTarget.style.borderColor = 'var(--border-color)'}
         >
-          <CheckCircle2 size={15} color="#06d6a0" />
+          <CheckCircle2 size={16} color="var(--text-primary)" />
           <div style={{ flex: 1, textAlign: 'left', overflow: 'hidden' }}>
-            <p style={{ fontSize: '0.72rem', color: '#06d6a0', fontWeight: 600, lineHeight: 1.2 }}>Connected</p>
-            <p style={{ fontSize: '0.75rem', color: 'rgba(232,232,240,0.5)', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-primary)', fontWeight: 500, lineHeight: 1.2 }}>Connected</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {truncateAddress(address)}
             </p>
           </div>
         </button>
       ) : (
-        /* Disconnected state */
         <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.97 }}
+          whileTap={{ scale: 0.98 }}
           onClick={connect}
           disabled={loading}
           style={{
             width: '100%', display: 'flex', alignItems: 'center', gap: '0.6rem',
-            padding: '0.6rem 0.85rem', borderRadius: '0.75rem',
-            background: 'linear-gradient(135deg, rgba(124,106,255,0.15), rgba(6,214,160,0.08))',
-            border: '1px solid rgba(124,106,255,0.25)',
-            color: '#a897ff', cursor: loading ? 'wait' : 'pointer',
-            fontSize: '0.82rem', fontWeight: 600,
+            padding: '0.65rem 0.85rem', borderRadius: '6px',
+            background: 'var(--bg-primary)',
+            border: '1px solid var(--border-color)',
+            color: 'var(--text-primary)', cursor: loading ? 'wait' : 'pointer',
+            fontSize: '0.85rem', fontWeight: 500, transition: 'background 0.2s'
           }}
+          onMouseOver={(e) => e.currentTarget.style.background = 'var(--bg-secondary)'}
+          onMouseOut={(e) => e.currentTarget.style.background = 'var(--bg-primary)'}
         >
           {loading
-            ? <Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} />
-            : <Wallet size={15} />
+            ? <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
+            : <Wallet size={16} color="var(--text-secondary)" />
           }
           {loading ? 'Connecting…' : 'Connect Wallet'}
           <style>{`@keyframes spin { to { transform: rotate(360deg); }}`}</style>
         </motion.button>
       )}
 
-      {/* Wallet popup */}
       <AnimatePresence>
         {open && address && (
           <motion.div
-            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
             style={{
               position: 'absolute', bottom: '110%', left: 0, right: 0, zIndex: 300,
-              background: 'rgba(13,13,31,0.98)', border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '0.85rem', padding: '1rem', minWidth: 200,
+              background: 'var(--bg-primary)', border: '1px solid var(--border-color)',
+              borderRadius: '8px', padding: '1rem', minWidth: 200,
+              boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
             }}
           >
-            <p style={{ fontSize: '0.7rem', color: 'rgba(232,232,240,0.4)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>Connected Wallet</p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 500, marginBottom: '0.5rem' }}>Connected Wallet</p>
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem', background: 'rgba(255,255,255,0.04)', borderRadius: '0.5rem', padding: '0.5rem 0.6rem' }}>
-              <span style={{ fontSize: '0.78rem', fontFamily: 'monospace', color: '#e8e8f0', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem', background: 'var(--bg-secondary)', borderRadius: '4px', padding: '0.5rem 0.6rem', border: '1px solid var(--border-color)' }}>
+              <span style={{ fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--text-primary)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {address}
               </span>
-              <button onClick={copyAddress} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(232,232,240,0.4)', padding: 2 }}>
-                <Copy size={13} />
+              <button onClick={copyAddress} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: 2 }}>
+                <Copy size={14} />
               </button>
-              <a href={`https://etherscan.io/address/${address}`} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(232,232,240,0.4)', display: 'flex' }}>
-                <ExternalLink size={13} />
+              <a href={`https://etherscan.io/address/${address}`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-secondary)', display: 'flex' }}>
+                <ExternalLink size={14} />
               </a>
             </div>
 
             {networkName && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.75rem' }}>
-                <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#06d6a0', boxShadow: '0 0 6px #06d6a0' }} />
-                <span style={{ fontSize: '0.75rem', color: 'rgba(232,232,240,0.5)' }}>{networkName}</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '1rem' }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--text-primary)' }} />
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{networkName}</span>
               </div>
             )}
 
             <button
               onClick={disconnect}
               style={{
-                width: '100%', padding: '0.45rem', borderRadius: '0.5rem',
-                background: 'rgba(255,107,151,0.08)', border: '1px solid rgba(255,107,151,0.15)',
-                color: '#ff6b97', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 500,
-                fontFamily: 'Outfit, sans-serif',
+                width: '100%', padding: '0.55rem', borderRadius: '4px',
+                background: 'transparent', border: '1px solid var(--border-color)',
+                color: '#EF4444', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 500,
+                fontFamily: 'Inter, sans-serif', transition: 'all 0.15s ease'
               }}
+              onMouseOver={(e) => { e.currentTarget.style.background = '#FEF2F2'; e.currentTarget.style.borderColor = '#FCA5A5'; }}
+              onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'var(--border-color)'; }}
             >
               Disconnect
             </button>
