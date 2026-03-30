@@ -60,8 +60,8 @@ export default function TransactionForm() {
               <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '1.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.25rem', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.1)' }}>
                 {(['expense', 'income'] as const).map(t => (
                   <button key={t} onClick={() => { setType(t); setCategory('') }} style={{
-                    flex: 1, padding: '0.5rem', borderRadius: '12px', border: 'none', cursor: 'pointer',
-                    fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', fontWeight: 500, textTransform: 'capitalize',
+                    flex: 1, padding: '0.5rem', borderRadius: '12px', cursor: 'pointer',
+                    fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', fontWeight: 500, textTransform: 'capitalize' as const,
                     background: type === t ? (t === 'income' ? 'rgba(74,222,128,0.18)' : 'rgba(251,113,133,0.18)') : 'transparent',
                     color: type === t ? (t === 'income' ? '#4ADE80' : '#FB7185') : 'rgba(255,255,255,0.4)',
                     border: type === t ? `1px solid ${t === 'income' ? 'rgba(74,222,128,0.3)' : 'rgba(251,113,133,0.3)'}` : '1px solid transparent',

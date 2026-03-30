@@ -124,8 +124,8 @@ export default function SubscriptionsPage() {
                   <div style={{ display: 'flex', gap: '0.4rem', background: 'rgba(255,255,255,0.05)', padding: '0.25rem', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.1)' }}>
                     {(['monthly', 'weekly'] as const).map(f => (
                       <button key={f} type="button" onClick={() => setFrequency(f)} style={{
-                        flex: 1, padding: '0.5rem', borderRadius: '12px', border: 'none', cursor: 'pointer',
-                        fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', fontWeight: 500, textTransform: 'capitalize',
+                        flex: 1, padding: '0.5rem', borderRadius: '12px', cursor: 'pointer',
+                        fontFamily: 'Inter, sans-serif', fontSize: '0.9rem', fontWeight: 500, textTransform: 'capitalize' as const,
                         background: frequency === f ? 'rgba(52,216,235,0.18)' : 'transparent',
                         color: frequency === f ? '#34D8EB' : 'rgba(255,255,255,0.4)',
                         border: frequency === f ? '1px solid rgba(52,216,235,0.3)' : '1px solid transparent',
