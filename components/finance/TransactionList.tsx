@@ -21,35 +21,36 @@ export default function TransactionList() {
   return (
     <div>
       {/* Filter tabs */}
-      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
         {(['all', 'income', 'expense'] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
             style={{
-              padding: '0.4rem 1rem', borderRadius: '999px', border: 'none', cursor: 'pointer',
-              fontFamily: 'Outfit, sans-serif', fontSize: '0.82rem', fontWeight: 500,
-              background: filter === f ? 'rgba(124,106,255,0.2)' : 'rgba(255,255,255,0.05)',
-              color: filter === f ? '#a897ff' : 'rgba(232,232,240,0.5)',
-              transition: 'all 0.2s',
+              padding: '0.4rem 1.2rem', borderRadius: '0', border: '3px solid #FFF', cursor: 'pointer',
+              fontFamily: 'Outfit, sans-serif', fontSize: '0.85rem', fontWeight: 900, textTransform: 'uppercase',
+              background: filter === f ? '#00E5FF' : '#000',
+              color: filter === f ? '#000' : '#FFF',
+              boxShadow: filter === f ? '3px 3px 0px #FFF' : '1px 1px 0px #FFF',
+              transition: 'all 0.1s',
             }}
           >
-            {f.charAt(0).toUpperCase() + f.slice(1)}
+            {f}
           </button>
         ))}
-        <span style={{ marginLeft: 'auto', color: 'rgba(232,232,240,0.35)', fontSize: '0.8rem', alignSelf: 'center' }}>
+        <span style={{ marginLeft: 'auto', color: '#FFF', fontSize: '0.85rem', fontWeight: 800, alignSelf: 'center', textTransform: 'uppercase' }}>
           {filtered.length} entries
         </span>
       </div>
 
       {filtered.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '3rem', color: 'rgba(232,232,240,0.3)' }}>
-          <FileText size={32} style={{ margin: '0 auto 0.75rem' }} />
-          <p>No transactions yet</p>
+        <div style={{ textAlign: 'center', padding: '3rem', color: '#FFF', border: '3px dashed #FFF', background: '#000' }}>
+          <FileText size={40} style={{ margin: '0 auto 1rem' }} />
+          <p style={{ fontWeight: 800, textTransform: 'uppercase' }}>No transactions yet</p>
         </div>
       )}
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <AnimatePresence>
           {visible.map((t: Transaction) => (
             <motion.div
@@ -58,34 +59,40 @@ export default function TransactionList() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 10 }}
               className="glass-card-md"
-              style={{ padding: '0.85rem 1.1rem', display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'space-between' }}
+              style={{ padding: '1rem', display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'space-between', background: '#000' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1, minWidth: 0 }}>
                 <div style={{
-                  width: 36, height: 36, borderRadius: '10px', flexShrink: 0,
-                  background: t.type === 'income' ? 'rgba(6,214,160,0.15)' : 'rgba(255,107,151,0.15)',
+                  width: 44, height: 44, borderRadius: '0', flexShrink: 0,
+                  background: t.type === 'income' ? '#00E676' : '#FF4081',
+                  border: '3px solid #FFF',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '1rem',
+                  fontSize: '1.2rem', fontWeight: 900, color: '#000',
+                  boxShadow: '2px 2px 0px #FFF'
                 }}>
                   {t.type === 'income' ? '↑' : '↓'}
                 </div>
                 <div style={{ minWidth: 0 }}>
-                  <p style={{ fontWeight: 500, fontSize: '0.9rem', color: '#e8e8f0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <p style={{ fontWeight: 800, fontSize: '1.05rem', color: '#FFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textTransform: 'uppercase' }}>
                     {t.note || t.category}
                   </p>
-                  <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.15rem', flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: '0.72rem', color: 'rgba(232,232,240,0.4)' }}>{format(new Date(t.date), 'MMM d, yyyy')}</span>
+                  <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.25rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.8rem', color: '#FFF', fontWeight: 700, borderBottom: '2px solid #FFF' }}>{format(new Date(t.date), 'MMM d, yyyy')}</span>
                     <span className={`badge badge-${t.type}`}>{t.category}</span>
-                    {t.tax_deductible && <span className="badge" style={{ background: 'rgba(124,106,255,0.1)', color: '#a897ff', border: '1px solid rgba(124,106,255,0.2)' }}>Tax ✓</span>}
+                    {t.tax_deductible && <span className="badge" style={{ background: '#B28DFF', color: '#000', border: '2px solid #FFF', boxShadow: '2px 2px 0px #FFF' }}>TAX ✓</span>}
                   </div>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexShrink: 0 }}>
-                <span className={privacyMode ? 'privacy-blur' : ''} style={{ fontWeight: 700, fontSize: '1rem', color: t.type === 'income' ? '#06d6a0' : '#ff6b97' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
+                <span className={privacyMode ? 'privacy-blur' : ''} style={{ fontWeight: 900, fontSize: '1.2rem', color: t.type === 'income' ? '#00E676' : '#FF4081', display: 'flex', alignItems: 'center' }}>
                   {t.type === 'income' ? '+' : '-'}{fmt(t.amount)}
                 </span>
-                <button className="btn-danger" onClick={() => deleteTransaction(t.id)} style={{ padding: '0.3rem', borderRadius: '0.5rem' }}>
-                  <Trash2 size={14} />
+                <button 
+                  className="btn-danger" 
+                  onClick={() => deleteTransaction(t.id)} 
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, padding: 0 }}
+                >
+                  <Trash2 size={16} strokeWidth={3} />
                 </button>
               </div>
             </motion.div>
@@ -97,18 +104,18 @@ export default function TransactionList() {
         <button
           onClick={() => setShowCount((n) => n + 20)}
           className="btn-secondary"
-          style={{ width: '100%', marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
+          style={{ width: '100%', marginTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', background: '#FFEB3B', color: '#000' }}
         >
-          <ChevronDown size={15} /> Show more
+          <ChevronDown size={18} strokeWidth={3} /> SHOW MORE
         </button>
       )}
       {showCount > 20 && (
         <button
           onClick={() => setShowCount(20)}
           className="btn-secondary"
-          style={{ width: '100%', marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
+          style={{ width: '100%', marginTop: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', background: '#FFF', color: '#000' }}
         >
-          <ChevronUp size={15} /> Collapse
+          <ChevronUp size={18} strokeWidth={3} /> COLLAPSE
         </button>
       )}
     </div>

@@ -35,32 +35,32 @@ export default function SpendingHeatmap() {
   const weeks: (Date | null)[][] = []
   for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7))
 
-  const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+  const dayLabels = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
   return (
-    <div className="glass-card" style={{ padding: '1.5rem' }}>
+    <div className="glass-card" style={{ padding: '1.5rem', background: '#000', border: '3px solid #FFF', boxShadow: '4px 4px 0px #FF4081' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
-        <h3 style={{ fontWeight: 700, fontSize: '1rem' }}>Spending Heatmap</h3>
+        <h3 style={{ fontWeight: 900, fontSize: '1.2rem', textTransform: 'uppercase', color: '#FFF' }}>Spending Heatmap</h3>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <button onClick={() => setMonthOffset((n) => n + 1)} style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#e8e8f0', borderRadius: '0.5rem', padding: '0.3rem 0.75rem', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', fontSize: '0.8rem' }}>‹</button>
-          <span style={{ fontWeight: 600, fontSize: '0.9rem', minWidth: 110, textAlign: 'center' }}>{format(targetMonth, 'MMMM yyyy')}</span>
-          <button onClick={() => setMonthOffset((n) => Math.max(0, n - 1))} disabled={monthOffset === 0} style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: monthOffset === 0 ? 'rgba(232,232,240,0.2)' : '#e8e8f0', borderRadius: '0.5rem', padding: '0.3rem 0.75rem', cursor: monthOffset === 0 ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', fontSize: '0.8rem' }}>›</button>
+          <button onClick={() => setMonthOffset((n) => n + 1)} style={{ background: '#000', border: '2px solid #FFF', color: '#FFF', borderRadius: '0', padding: '0.3rem 0.75rem', cursor: 'pointer', fontFamily: 'Outfit, sans-serif', fontSize: '1rem', fontWeight: 900, boxShadow: '2px 2px 0px #FFF' }}>‹</button>
+          <span style={{ fontWeight: 800, fontSize: '0.9rem', minWidth: 120, textAlign: 'center', textTransform: 'uppercase', color: '#FF4081' }}>{format(targetMonth, 'MMMM yyyy')}</span>
+          <button onClick={() => setMonthOffset((n) => Math.max(0, n - 1))} disabled={monthOffset === 0} style={{ background: '#000', border: '2px solid #FFF', color: monthOffset === 0 ? '#555' : '#FFF', borderRadius: '0', padding: '0.3rem 0.75rem', cursor: monthOffset === 0 ? 'not-allowed' : 'pointer', fontFamily: 'Outfit, sans-serif', fontSize: '1rem', fontWeight: 900, boxShadow: monthOffset === 0 ? 'none' : '2px 2px 0px #FFF', opacity: monthOffset === 0 ? 0.5 : 1 }}>›</button>
         </div>
       </div>
 
       {/* Day labels */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4, marginBottom: 4 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6, marginBottom: 8 }}>
         {dayLabels.map((l) => (
-          <div key={l} style={{ textAlign: 'center', fontSize: '0.65rem', color: 'rgba(232,232,240,0.35)', paddingBottom: 2 }}>{l}</div>
+          <div key={l} style={{ textAlign: 'center', fontSize: '0.75rem', color: '#FFF', paddingBottom: 2, fontWeight: 800 }}>{l}</div>
         ))}
       </div>
 
       {/* Heatmap grid */}
       <div style={{ position: 'relative' }}>
         {weeks.map((week, wi) => (
-          <div key={wi} style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4, marginBottom: 4 }}>
+          <div key={wi} style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6, marginBottom: 6 }}>
             {week.map((day, di) => {
-              if (!day) return <div key={di} style={{ aspectRatio: '1', borderRadius: 6 }} />
+              if (!day) return <div key={di} style={{ aspectRatio: '1', borderRadius: 0 }} />
               const key = format(day, 'yyyy-MM-dd')
               const spend = spendByDay[key] ?? 0
               const intensity = spend / maxSpend
@@ -73,16 +73,24 @@ export default function SpendingHeatmap() {
                   onMouseLeave={() => setTooltip(null)}
                   style={{
                     aspectRatio: '1',
-                    borderRadius: 6,
+                    borderRadius: 0,
                     cursor: 'pointer',
                     background: spend > 0
-                      ? `rgba(255, 107, 151, ${Math.max(0.12, intensity * 0.85)})`
-                      : 'rgba(255,255,255,0.04)',
-                    border: isToday ? '1px solid rgba(124,106,255,0.7)' : '1px solid transparent',
-                    transition: 'transform 0.1s',
+                      ? `rgba(255, 64, 129, ${Math.max(0.15, intensity * 0.95)})` // matches #FF4081
+                      : '#000',
+                    border: isToday ? '3px solid #00E676' : '2px solid #333',
+                    transition: 'transform 0.1s, border-color 0.1s',
                   }}
-                  onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.15)' }}
-                  onMouseOut={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)' }}
+                  onMouseOver={(e) => { 
+                    (e.currentTarget as HTMLElement).style.transform = 'scale(1.15)'; 
+                    (e.currentTarget as HTMLElement).style.borderColor = '#FFF';
+                    (e.currentTarget as HTMLElement).style.zIndex = '10';
+                  }}
+                  onMouseOut={(e) => { 
+                    (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; 
+                    (e.currentTarget as HTMLElement).style.borderColor = isToday ? '#00E676' : '#333';
+                    (e.currentTarget as HTMLElement).style.zIndex = '1';
+                  }}
                 />
               )
             })}
@@ -91,24 +99,24 @@ export default function SpendingHeatmap() {
       </div>
 
       {/* Legend */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '1rem', justifyContent: 'flex-end' }}>
-        <span style={{ fontSize: '0.7rem', color: 'rgba(232,232,240,0.35)' }}>Low</span>
-        {[0.1, 0.25, 0.45, 0.65, 0.85].map((op) => (
-          <div key={op} style={{ width: 14, height: 14, borderRadius: 3, background: `rgba(255,107,151,${op})` }} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '1.25rem', justifyContent: 'flex-end' }}>
+        <span style={{ fontSize: '0.75rem', color: '#FFF', fontWeight: 800, textTransform: 'uppercase' }}>Low</span>
+        {[0.15, 0.35, 0.55, 0.75, 0.95].map((op) => (
+          <div key={op} style={{ width: 14, height: 14, borderRadius: 0, background: `rgba(255, 64, 129, ${op})`, border: '1px solid #333' }} />
         ))}
-        <span style={{ fontSize: '0.7rem', color: 'rgba(232,232,240,0.35)' }}>High</span>
+        <span style={{ fontSize: '0.75rem', color: '#FFF', fontWeight: 800, textTransform: 'uppercase' }}>High</span>
       </div>
 
       {/* Floating tooltip */}
       {tooltip && (
         <div style={{
           position: 'fixed', left: tooltip.x + 12, top: tooltip.y - 40, zIndex: 200,
-          background: 'rgba(13,13,31,0.95)', border: '1px solid rgba(255,255,255,0.1)',
-          borderRadius: '0.6rem', padding: '0.4rem 0.75rem', pointerEvents: 'none',
-          fontSize: '0.78rem', fontWeight: 500,
+          background: '#FFF', border: '3px solid #000',
+          borderRadius: '0', padding: '0.4rem 0.75rem', pointerEvents: 'none',
+          fontSize: '0.85rem', fontWeight: 900, boxShadow: '4px 4px 0px #000'
         }}>
-          <span style={{ color: 'rgba(232,232,240,0.6)' }}>{tooltip.day} </span>
-          <span style={{ color: '#ff6b97' }}>₹{tooltip.amount.toFixed(2)}</span>
+          <span style={{ color: '#000', textTransform: 'uppercase' }}>{tooltip.day} </span>
+          <span style={{ color: '#FF4081' }}>₹{tooltip.amount.toFixed(2)}</span>
         </div>
       )}
     </div>

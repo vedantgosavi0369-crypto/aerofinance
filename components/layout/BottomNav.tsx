@@ -23,14 +23,12 @@ export default function BottomNav() {
       left: 0,
       right: 0,
       zIndex: 100,
-      background: 'rgba(6,6,19,0.92)',
-      backdropFilter: 'blur(20px)',
-      WebkitBackdropFilter: 'blur(20px)',
-      borderTop: '1px solid rgba(255,255,255,0.07)',
+      background: '#000000',
+      borderTop: '4px solid #FFFFFF',
       display: 'flex',
       justifyContent: 'space-around',
       alignItems: 'center',
-      padding: '0.5rem 0 calc(0.5rem + env(safe-area-inset-bottom))',
+      padding: '0.75rem 0 calc(0.75rem + env(safe-area-inset-bottom))',
       gap: '0.25rem',
     }}>
       {navItems.map(({ href, label, icon: Icon }) => {
@@ -45,7 +43,7 @@ export default function BottomNav() {
                 alignItems: 'center',
                 gap: '0.25rem',
                 padding: '0.4rem 0',
-                borderRadius: '0.6rem',
+                borderRadius: '0',
                 position: 'relative',
               }}
             >
@@ -54,21 +52,21 @@ export default function BottomNav() {
                   layoutId="bottom-nav-indicator"
                   style={{
                     position: 'absolute',
-                    top: 0,
+                    top: -12, /* aligns with the very top of the bar */
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    width: 24,
-                    height: 3,
-                    borderRadius: 999,
-                    background: 'linear-gradient(90deg, #7c6aff, #06d6a0)',
+                    width: '100%',
+                    height: 4,
+                    background: '#00E676',
                   }}
                 />
               )}
-              <Icon size={20} color={isActive ? '#a897ff' : 'rgba(232,232,240,0.35)'} />
+              <Icon size={22} color={isActive ? '#00E676' : '#FFFFFF'} strokeWidth={isActive ? 3 : 2} />
               <span style={{
-                fontSize: '0.62rem',
-                fontWeight: isActive ? 600 : 400,
-                color: isActive ? '#a897ff' : 'rgba(232,232,240,0.35)',
+                fontSize: '0.65rem',
+                fontWeight: isActive ? 800 : 600,
+                color: isActive ? '#00E676' : '#FFFFFF',
+                textTransform: 'uppercase',
               }}>
                 {label}
               </span>
